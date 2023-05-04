@@ -4,7 +4,6 @@ const path = require('path');
 const output = fs.createWriteStream(path.resolve(__dirname, 'text.txt'));
 stdout.write('Hello!\nPlease, enter your name, age and gender\n');
 let text = [];
-
 stdin.on('data', (chunk) => {
   if (!chunk.includes('exit')) {
     text.push(chunk);
