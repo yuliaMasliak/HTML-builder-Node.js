@@ -1,0 +1,4 @@
+Yulia
+25
+female
+.exit
