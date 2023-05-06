@@ -81,31 +81,37 @@ function createStyles() {
 function addAssets() {
   fs.readdir(path.resolve(__dirname, 'assets'), (err, data) => {
     if (err) console.log(err.message);
-    fs.mkdir(path.resolve(__dirname, 'project-dist', 'assets'), (err) => {
-      //if (err) console.log(err.message);
-    });
-    data.forEach((folder) => {
-      fs.mkdir(
-        path.join(__dirname, 'project-dist', 'assets', folder),
-        (err) => {
-          //if (err) console.log(err.message);
-        }
-      );
 
-      fs.readdir(path.resolve(__dirname, 'assets', folder), (err, data) => {
-        if (err) console.log(err.message);
-        data.forEach(async (file) => {
-          try {
-            await copyFile(
-              path.resolve(__dirname, 'assets', folder, file),
-              path.join(__dirname, 'project-dist', 'assets', folder, file)
-            );
-          } catch (err) {
-            console.log(err.message);
-          }
-        });
-      });
+    fs.mkdir(path.resolve(__dirname, 'project-dist', 'assets'), (err) => {
+      if (err) createMainAssetsFolder();
     });
+    createMainAssetsFolder();
+    function createMainAssetsFolder() {
+      data.forEach((folder) => {
+        fs.mkdir(
+          path.join(__dirname, 'project-dist', 'assets', folder),
+          (err) => {
+            if (err) createInnerFolder();
+          }
+        );
+        createInnerFolder();
+        function createInnerFolder() {
+          fs.readdir(path.resolve(__dirname, 'assets', folder), (err, data) => {
+            if (err) console.log(err.message);
+            data.forEach(async (file) => {
+              try {
+                await copyFile(
+                  path.resolve(__dirname, 'assets', folder, file),
+                  path.join(__dirname, 'project-dist', 'assets', folder, file)
+                );
+              } catch (err) {
+                console.log(err.message);
+              }
+            });
+          });
+        }
+      });
+    }
   });
 }
 createDir();
