@@ -1,9 +1,11 @@
 const { copyFile, constants } = require('node:fs/promises');
 const fs = require('fs');
 const path = require('path');
-const { stdout, stdin } = process;
+const { stdout } = process;
+
 const pathToSourceFolder = path.resolve(__dirname, 'files');
 const pathToDestinationFolder = path.resolve(__dirname, 'copyDir');
+
 function createCopyFiles() {
   fs.readdir(pathToSourceFolder, (err, data) => {
     if (err) throw err;
